@@ -1,6 +1,11 @@
 var array = [];
+var intervalID;
 
 function callback(array) {
+  if( intervalID ) {
+    clearInterval( intervalID );
+  }
+  
 	console.log(array.length);
 	console.log('CallBack Finish Time: ', Date.now());
 }
@@ -16,7 +21,7 @@ function doSyncTask(a,b,c) {
 	console.log('doSyncTask Done: ', Date.now());
 }
 
-doSyncTask(true, 0, 1000000);
+//doSyncTask(true, 0, 1000000);
 
 // aSync Way
 function doaSyncTask(a,b,c) {
@@ -25,19 +30,24 @@ function doaSyncTask(a,b,c) {
 	if(a == true) {
 		setTimeout(function () {
 			callback(iterator(b,c, array));
-		}, 0);
+		}, 1000);
+    
+    intervalID = setInterval(function() {
+      console.log("Doing something usefull");
+    }, 200);
+    
 		console.log('doaSyncTask-> iterator Done: ', Date.now());
 	}
 	console.log('doaSyncTask Done: ', Date.now());
 }
 
-//doaSyncTask(true, 0, 1000000);
+doaSyncTask(true, 0, 10000000);
 
 
 function iterator(start, end, array) {
 	console.log('iterator Start: ', Date.now());
 	for(var i = start; i < end; i++) {
-		array.push(i);
+		array.push(new Function(""));
 	}
 	console.log('iterator End: ', Date.now());
 	return array;
